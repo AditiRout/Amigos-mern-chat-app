@@ -1,6 +1,5 @@
 # Amigos-mern-chat-app
-A Full Stack Chat App Project with Realtime messaging functionality with socket.io . Used netlify for frontend and heroku for backend
-# WebApp-Internship-
+A Full Stack Chat App Project with Realtime messaging functionality with socket.io . Used netlify for frontend and railways for backend.
 
 ## Install the frontend
 

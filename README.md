@@ -5,7 +5,7 @@ A Full Stack Chat App Project with Realtime messaging functionality with socket.
 
 ```bash
 git clone git@github.com:AditiRout/Amigos-mern-chat-app.git
-cd client
+cd frontend
 npm install
 npm start
 ```
@@ -14,7 +14,7 @@ npm start
 
 ```bash
 git clone git@github.com:AditiRout/Amigos-mern-chat-app.git
-cd server
+cd backend
 npm install
 npm start
 ```

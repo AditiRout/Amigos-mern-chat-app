@@ -89,7 +89,7 @@ const PicModal = ({ user, setUser, children }) => {
       };
 
       const data = await axios.put(
-        `https://amigos-backend-production.up.railway.app/api/user/updatePic`,
+        `https://resolute-finger-production.up.railway.app/api/user/updatePic`,
         {
           email: user.email,
           pic: pic,

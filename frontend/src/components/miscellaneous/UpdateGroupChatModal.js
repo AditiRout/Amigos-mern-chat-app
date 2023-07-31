@@ -46,7 +46,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`https://amigos-backend-production.up.railway.app/api/user?search=${search}`, config);
+      const { data } = await axios.get(`https://resolute-finger-production.up.railway.app/api/user?search=${search}`, config);
       console.log(data);
       setLoading(false);
       setSearchResult(data);
@@ -74,7 +74,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.put(
-        `https://amigos-backend-production.up.railway.app/api/chat/rename`,
+        `https://resolute-finger-production.up.railway.app/api/chat/rename`,
         {
           chatId: selectedChat._id,
           chatName: groupChatName,
@@ -132,7 +132,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.put(
-        `https://amigos-backend-production.up.railway.app/api/chat/groupadd`,
+        `https://resolute-finger-production.up.railway.app/api/chat/groupadd`,
         {
           chatId: selectedChat._id,
           userId: user1._id,
@@ -177,7 +177,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.put(
-        `https://amigos-backend-production.up.railway.app/api/chat/groupremove`,
+        `https://resolute-finger-production.up.railway.app/api/chat/groupremove`,
         {
           chatId: selectedChat._id,
           userId: user1._id,

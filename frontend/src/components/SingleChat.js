@@ -50,7 +50,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setLoading(true);
       
       const { data } = await axios.get(
-        `https://amigos-backend-production.up.railway.app/api/message/${selectedChat._id}`,
+        `https://resolute-finger-production.up.railway.app/api/message/${selectedChat._id}`,
         config
         );
         console.log(data)
@@ -87,7 +87,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           };
           setNewMessage("");
           const { data } = await axios.post(
-            "https://amigos-backend-production.up.railway.app/api/message",
+            "https://resolute-finger-production.up.railway.app/api/message",
             {
               content: newMess,
               chatId: selectedChat._id,

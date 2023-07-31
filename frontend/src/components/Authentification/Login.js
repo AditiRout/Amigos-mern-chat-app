@@ -41,7 +41,7 @@ const Login = () => {
         },
       };
       const { data } = await axios.post(
-        "https://amigos-backend-production.up.railway.app/api/user/login",
+        "https://resolute-finger-production.up.railway.app/api/user/login",
         {
          
           email,

@@ -35,7 +35,7 @@ const MyChats = ({ fetchAgain }) => {
         },
       };
       
-      const { data } = await axios.get("https://amigos-backend-production.up.railway.app/api/chat", config);
+      const { data } = await axios.get("https://resolute-finger-production.up.railway.app/api/chat", config);
       setChats(data);
       console.log(chats)
     } catch (error) {

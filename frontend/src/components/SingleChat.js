@@ -36,122 +36,121 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-  const { selectedChat, setSelectedChat, user, notification, setNotification } =ChatState();
+  const { selectedChat, setSelectedChat, user, notification, setNotification } =
+    ChatState();
   const fetchMessages = async () => {
     if (!selectedChat) return;
-    
+
     try {
       const config = {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      
+
       setLoading(true);
-      
+
       const { data } = await axios.get(
-        `https://resolute-finger-production.up.railway.app/api/message/${selectedChat._id}`,
+        `https://amigos-backend.onrender.com/api/message/${selectedChat._id}`,
         config
+      );
+      console.log(data);
+      setMessages(data);
+      setLoading(false);
+
+      socket.emit("join chat", selectedChat._id);
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Error Occured!",
+        description: "Failed to Load the Messages",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+    }
+  };
+
+  const sendMessage = async (event) => {
+    if (event.key === "Enter" && newMessage) {
+      socket.emit("stop typing", selectedChat._id);
+      console.log(selectedChat._id);
+      let badWords =
+        /asshole|fuck|mf|motherfucker|slut|whore|bitch|shit|butthole/gi;
+      let newMess = newMessage.replace(badWords, "*******");
+
+      try {
+        const config = {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+        setNewMessage("");
+        const { data } = await axios.post(
+          "https://amigos-backend.onrender.com/api/message",
+          {
+            content: newMess,
+            chatId: selectedChat._id,
+            //userId:user._id,
+          },
+          config
         );
-        console.log(data)
-        setMessages(data);
-        setLoading(false);
-        
-        socket.emit("join chat", selectedChat._id);
+        console.log(data);
+        socket.emit("new message", data);
+        setMessages([...messages, data]);
       } catch (error) {
-        console.log(error)
         toast({
           title: "Error Occured!",
-          description: "Failed to Load the Messages",
+          description: error.response.data.message,
           status: "error",
           duration: 5000,
           isClosable: true,
           position: "bottom",
         });
+        console.log(error);
       }
-    };
-    
-    const sendMessage = async (event) => {
-      if (event.key === "Enter" && newMessage) {
-        socket.emit("stop typing", selectedChat._id);
-        console.log(selectedChat._id)
-        let badWords=/asshole|fuck|mf|motherfucker|slut|whore|bitch|shit|butthole/gi
-        let newMess=newMessage.replace(badWords,"*******");
+    }
+  };
+  //console.log(selectedChat)
 
-        try {
-          const config = {
-            headers: {
-              "Content-type": "application/json",
-              Authorization: `Bearer ${user.token}`,
-            },
-          };
-          setNewMessage("");
-          const { data } = await axios.post(
-            "https://resolute-finger-production.up.railway.app/api/message",
-            {
-              content: newMess,
-              chatId: selectedChat._id,
-              //userId:user._id,
-            },
-            config
-            );
-            console.log(data)
-            socket.emit("new message", data);
-            setMessages([...messages, data]);
-          } catch (error) {
-            toast({
-              title: "Error Occured!",
-              description: error.response.data.message,
-              status: "error",
-              duration: 5000,
-              isClosable: true,
-              position: "bottom",
-            });
-            console.log(error)
-          }
-        }
-      };
-      //console.log(selectedChat)
-      
-      useEffect(() => {
-        socket = io(ENDPOINT);
-        socket.emit("setup", user);
-        socket.on("connected", () => setSocketConnected(true));
-        socket.on("typing", () => setIsTyping(true));
-        socket.on("stop typing", () => setIsTyping(false));
-        
-        // eslint-disable-next-line
-      }, []);
-      
-      useEffect(() => {
-        fetchMessages();
-        
-        selectedChatCompare = selectedChat;
-        // eslint-disable-next-line
-      }, [selectedChat]);
-      
-      useEffect(() => {
-        
-          socket.on("message recieved", (newMessageRecieved) => {
-          // console.log(newMessageRecieved,'----')
-          // if (
-          //   !selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.chat._id
-          //   ) {
-          //     if (!notification.includes(newMessageRecieved)) {
-          //       setNotification([newMessageRecieved,...notification]);
-          //       setFetchAgain(!fetchAgain);
-          //       console.log(notification)
-          //     }
-          //   } else {
-              setMessages([...messages, newMessageRecieved]);
-          //   }
-          });
-        
-         //not one time
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connected", () => setSocketConnected(true));
+    socket.on("typing", () => setIsTyping(true));
+    socket.on("stop typing", () => setIsTyping(false));
 
-        })
-        
-        
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    fetchMessages();
+
+    selectedChatCompare = selectedChat;
+    // eslint-disable-next-line
+  }, [selectedChat]);
+
+  useEffect(() => {
+    socket.on("message recieved", (newMessageRecieved) => {
+      // console.log(newMessageRecieved,'----')
+      // if (
+      //   !selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.chat._id
+      //   ) {
+      //     if (!notification.includes(newMessageRecieved)) {
+      //       setNotification([newMessageRecieved,...notification]);
+      //       setFetchAgain(!fetchAgain);
+      //       console.log(notification)
+      //     }
+      //   } else {
+      setMessages([...messages, newMessageRecieved]);
+      //   }
+    });
+
+    //not one time
+  });
+
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
 
@@ -266,7 +265,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         </>
       ) : (
         // to get socket.io on same page
-        <Box display="flex" alignItems="center" justifyContent="center" h="100%">
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          h="100%"
+        >
           <Text fontSize="3xl" pb={3} fontFamily="Work sans">
             Click on a user to start chatting
           </Text>

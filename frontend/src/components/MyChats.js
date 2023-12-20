@@ -9,18 +9,10 @@ import GroupChatModal from "./miscellaneous/GroupChatModal";
 import { Button } from "@chakra-ui/react";
 import { ChatState } from "./Context/ChatProvider";
 
-
 const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
 
- 
-  const {
-    setSelectedChat,
-    user,
-    selectedChat,
-    chats,
-    setChats,
-  } =  ChatState();
+  const { setSelectedChat, user, selectedChat, chats, setChats } = ChatState();
 
   //console.log(chats)
 
@@ -34,12 +26,15 @@ const MyChats = ({ fetchAgain }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      
-      const { data } = await axios.get("https://resolute-finger-production.up.railway.app/api/chat", config);
+
+      const { data } = await axios.get(
+        "https://amigos-backend.onrender.com/api/chat",
+        config
+      );
       setChats(data);
-      console.log(chats)
+      console.log(chats);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       toast({
         title: "Error Occured!",
         description: error.response.data.message,
@@ -51,15 +46,10 @@ const MyChats = ({ fetchAgain }) => {
     }
   };
   useEffect(() => {
-     
-   
-      setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
-      fetchChats();
-      console.log(loggedUser)
+    setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
+    fetchChats();
+    console.log(loggedUser);
 
-   
-    
-    
     // eslint-disable-next-line
   }, [fetchAgain]);
 
@@ -105,7 +95,6 @@ const MyChats = ({ fetchAgain }) => {
         borderRadius="lg"
         overflowY="hidden"
       >
-        
         {chats ? (
           <Stack overflowY="scroll">
             {chats.map((chat) => (
@@ -133,9 +122,7 @@ const MyChats = ({ fetchAgain }) => {
                   </Text>
                 )}
               </Box>
-                
-                
-            ))  }
+            ))}
           </Stack>
         ) : (
           <ChatLoading />

@@ -30,7 +30,6 @@ const PicModal = ({ user, setUser, children }) => {
   const [picLoading, setPicLoading] = useState(false);
   const toast = useToast();
 
-
   const postDetails = (pics) => {
     setPicLoading(true);
     if (pics === undefined) {
@@ -89,7 +88,7 @@ const PicModal = ({ user, setUser, children }) => {
       };
 
       const data = await axios.put(
-        `https://resolute-finger-production.up.railway.app/api/user/updatePic`,
+        `https://amigos-backend.onrender.com/api/user/updatePic`,
         {
           email: user.email,
           pic: pic,

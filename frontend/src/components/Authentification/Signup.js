@@ -1,4 +1,3 @@
-
 import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
@@ -6,14 +5,14 @@ import { VStack } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate} from "react-router";
+import { useNavigate } from "react-router";
 
 const Signup = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const toast = useToast();
-  const navigate=useNavigate();
- 
+  const navigate = useNavigate();
+
   // const [isLogged, setisLogged] = useState(false)
 
   const [name, setName] = useState();
@@ -54,7 +53,7 @@ const Signup = () => {
         },
       };
       const { data } = await axios.post(
-        "https://resolute-finger-production.up.railway.app/api/user",
+        "https://amigos-backend.onrender.com/api/user",
         {
           name,
           email,
@@ -71,7 +70,7 @@ const Signup = () => {
         isClosable: true,
         position: "bottom",
       });
-      
+
       localStorage.setItem("userInfo", JSON.stringify(data));
       setPicLoading(false);
       navigate("/chats"); //...if this present then user doesnt have to login again after registration
